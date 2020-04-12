@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const regSchema = new mongoose.Schema({
+    stage: Number,
     question: [String],
     guessing: [String],
     answer: [String],

@@ -129,7 +129,7 @@ router.post('/S', (req, res) => {
         real_ques[i] = ques[randomInc(0, 3)]
     }
     const data = new Registration({
-        stage: 1,
+        stage: 0,
         question: real_ques,
         guessing: ["_"],
         answer: ["_", "_", "_", "_"],
