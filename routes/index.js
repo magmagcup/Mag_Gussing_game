@@ -21,16 +21,20 @@ router.post('/A', (req, res) => {
     const old_data = Registration.find().sort({_id:-1}).limit(1)
 
 old_data.then((old_data) =>  {
-    var index_of_answer = answer_checker("A", old_data[0].question, old_data[0].answer)
+    var index_of_answer = answer_checker("A", old_data[0].stage, old_data[0].question)
+    var new_stage = old_data[0].stage
+
     var new_answer = old_data[0].answer
     if (index_of_answer < 4) {
         new_answer[index_of_answer] = 'A';
+        var new_stage = index_of_answer + 1;
     }
-    var new_stage = old_data[0].stage + 1
-    var end_g = check_end_game(old_data[0].question, old_data[0].answer) 
+    var new_guess_time = old_data[0].guess_time + 1
+    var end_g = check_end_game(new_stage) 
 
     const data = new Registration({
         stage: new_stage,
+        guess_time: new_guess_time,
         question: old_data[0].question,
         guessing: ["_"],
         answer: new_answer,
@@ -47,16 +51,20 @@ router.post('/B', (req, res) => {
     const old_data = Registration.find().sort({_id:-1}).limit(1)
 
 old_data.then((old_data) =>  {
-    var index_of_answer = answer_checker("B", old_data[0].question, old_data[0].answer)
+    var index_of_answer = answer_checker("B", old_data[0].stage, old_data[0].question)
+    var new_stage = old_data[0].stage
+
     var new_answer = old_data[0].answer
     if (index_of_answer < 4) {
         new_answer[index_of_answer] = 'B';
+        var new_stage = index_of_answer + 1;
     }
-    var new_stage = old_data[0].stage + 1
-    var end_g = check_end_game(old_data[0].question, old_data[0].answer) 
+    var new_guess_time = old_data[0].guess_time + 1
+    var end_g = check_end_game(new_stage) 
 
     const data = new Registration({
         stage: new_stage,
+        guess_time: new_guess_time,
         question: old_data[0].question,
         guessing: ["_"],
         answer: new_answer,
@@ -73,16 +81,20 @@ router.post('/C', (req, res) => {
     const old_data = Registration.find().sort({_id:-1}).limit(1)
 
 old_data.then((old_data) =>  {
-    var index_of_answer = answer_checker("C", old_data[0].question, old_data[0].answer)
+    var index_of_answer = answer_checker("C", old_data[0].stage, old_data[0].question)
+    var new_stage = old_data[0].stage
+
     var new_answer = old_data[0].answer
     if (index_of_answer < 4) {
         new_answer[index_of_answer] = 'C';
+        var new_stage = index_of_answer + 1;
     }
-    var new_stage = old_data[0].stage + 1
-    var end_g = check_end_game(old_data[0].question, old_data[0].answer) 
+    var new_guess_time = old_data[0].guess_time + 1
+    var end_g = check_end_game(new_stage) 
 
     const data = new Registration({
         stage: new_stage,
+        guess_time: new_guess_time,
         question: old_data[0].question,
         guessing: ["_"],
         answer: new_answer,
@@ -99,16 +111,19 @@ router.post('/D', (req, res) => {
     const old_data = Registration.find().sort({_id:-1}).limit(1)
 
 old_data.then((old_data) =>  {
-    var index_of_answer = answer_checker("D", old_data[0].question, old_data[0].answer)
+    var index_of_answer = answer_checker("D", old_data[0].stage, old_data[0].question)
+    var new_stage = old_data[0].stage
     var new_answer = old_data[0].answer
     if (index_of_answer < 4) {
         new_answer[index_of_answer] = 'D';
+        var new_stage = index_of_answer + 1;
     }
-    var new_stage = old_data[0].stage + 1
-    var end_g = check_end_game(old_data[0].question, old_data[0].answer) 
+    var new_guess_time = old_data[0].guess_time + 1
+    var end_g = check_end_game(new_stage) 
 
     const data = new Registration({
         stage: new_stage,
+        guess_time: new_guess_time,
         question: old_data[0].question,
         guessing: ["_"],
         answer: new_answer,
@@ -130,6 +145,7 @@ router.post('/S', (req, res) => {
     }
     const data = new Registration({
         stage: 0,
+        guess_time: 0,
         question: real_ques,
         guessing: ["_"],
         answer: ["_", "_", "_", "_"],
@@ -148,26 +164,18 @@ router.get('/data', (req, res) => {
         })
 })
 
-const answer_checker = (ans,ques,array_ans) => {
-    console.log(ques)
-    console.log(array_ans)
-    for (var i = 0; i < ques.length; i++) {
-        if (array_ans[i] === "_" && ans === ques[i]) {
-            console.log(i);
-            return i;
-        }
-    }
+const answer_checker = (ans,stage,question) => {
+    console.log(stage)
+    if (ans == question[stage])
+        return stage;
     return 4;
 }
 
-const check_end_game = (ques,array_ans) => {
-
-    for (var i = 0; i < ques.length; i++) {
-        if (array_ans[i] !== ques[i]) {
-            return false;
-        }
+const check_end_game = (stage) => {
+    if (stage == 4) {
+        return true;
     }
-    return true;
+    return false;
 }
 
 const randomInc = (low, high) => {

@@ -90,9 +90,9 @@ const update_data = (document_field) => {
     .then(function(data){
         document.getElementById("answer").innerHTML = data[0].answer
         if (data[0].gameEnd === true) {
-            document.getElementById("play_time").innerHTML = data[0].stage + "Guess!"
+            document.getElementById("play_time").innerHTML = (data[0].guess_time - 4) + "Wrong Guess!"
         }
-        document.getElementById("guessing").innerHTML = data[0].stage + "Attempt so far"
+        document.getElementById("guessing").innerHTML = data[0].guess_time + "Attempt so far"
 
     })
 }
